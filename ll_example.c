@@ -5,7 +5,8 @@
 
 // self-referential structure                       
 struct Node {                                      
-   int data; // each listNode contains a character 
+   int data; // each listNode contains a character
+   char nodename[50];
    struct Node *nextPtr; // pointer to next node
    struct Node *pPtr; //pointer to next node
 }; // end structure listNode                        
@@ -17,7 +18,7 @@ typedef LLnode *LLPtr; // synonym for ListNode*
 
 int deletes( LLPtr *sPtr, int value );
 int isEmpty( LLPtr sPtr );
-void insert( LLPtr *sPtr, int value );
+void insert( LLPtr *sPtr, int value, char Lname[50]);
 void printList( LLPtr currentPtr );
 void reverseList (LLPtr currentPtr);
 void instructions( void );
@@ -27,6 +28,7 @@ int main( void )
    LLPtr startPtr = NULL; // initially there are no nodes
    unsigned int choice; // user's choice
    int item; // char entered by user
+   
 
    instructions(); // display the menu
    printf( "%s", "? " );
@@ -39,7 +41,10 @@ int main( void )
          case 1:
             printf( "%s", "Enter a number: " );
             scanf( "%d", &item );
-            insert( &startPtr, item ); // insert item in list
+            printf("Enter name: " );
+            char name[50]; 
+            scanf("%s",name);
+            insert( &startPtr, item , name ); // insert item in list
             printList( startPtr );
             reverseList( startPtr );
             break;
@@ -87,7 +92,8 @@ void instructions( void )
 } // end function instructions
 
 // insert a new value into the list in sorted order
-void insert( LLPtr *sPtr, int value )
+
+void insert(LLPtr *sPtr, int value, char Lname[50] )
 { 
    LLPtr newPtr; // pointer to new node
    LLPtr previousPtr; // pointer to previous node in list
@@ -99,6 +105,7 @@ void insert( LLPtr *sPtr, int value )
       newPtr->data = value; // place value in node
       newPtr->nextPtr = NULL; // node does not link to another node
       newPtr->pPtr = NULL;
+      strcpy(newPtr->nodename,Lname);
        
       previousPtr = NULL;
       currentPtr = *sPtr;
@@ -192,11 +199,11 @@ void printList( LLPtr currentPtr )
 
       // while not the end of the list
       while ( currentPtr->nextPtr!= NULL ) {
-         printf( "%d --> ", currentPtr->data );
+         printf( "%d %s --> ", currentPtr->data, currentPtr->nodename );
          currentPtr = currentPtr->nextPtr;   
       } // end while
 
-      printf( "%d --> NULL\n",currentPtr->data );
+      printf( "%d %s --> NULL\n",currentPtr->data,currentPtr->nodename );
        
 
      
@@ -217,11 +224,12 @@ void reverseList( LLPtr currentPtr )
 
       // while not the end of the list
       while ( currentPtr->pPtr!= NULL ) {
-         printf( "%d --> ", currentPtr->data );
+        printf( "%d %s --> ", currentPtr->data, currentPtr->nodename );
          currentPtr = currentPtr->pPtr;   
       } // end while
 
-      printf( "%d --> NULL\n",currentPtr->data );
+      printf( "%d %s --> NULL\n",currentPtr->data,currentPtr->nodename );
+
        
      } // end else
   } // end function printList
